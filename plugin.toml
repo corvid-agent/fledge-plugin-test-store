@@ -1,0 +1,22 @@
+[plugin]
+name = "test-store"
+version = "0.1.0"
+description = "Tests the store capability — verifies WASM plugins can persist and retrieve key-value data"
+author = "CorvidLabs"
+protocol = "fledge-v1"
+runtime = "wasm"
+
+[[commands]]
+name = "test-store"
+description = "Run store capability tests"
+binary = "target/wasm32-wasip1/release/test-store.wasm"
+
+[hooks]
+build = "cargo build --target wasm32-wasip1 --release"
+
+[capabilities]
+exec = false
+store = true
+metadata = false
+filesystem = "none"
+network = false
