@@ -36,7 +36,10 @@ fn json_escape(s: &str) -> String {
 }
 
 fn output(text: &str) {
-    fledge_send(&format!(r#"{{"type":"output","text":"{}"}}"#, json_escape(text)));
+    fledge_send(&format!(
+        r#"{{"type":"output","text":"{}"}}"#,
+        json_escape(text)
+    ));
 }
 
 fn pass(msg: &str) {
@@ -54,12 +57,16 @@ fn header(title: &str) {
 }
 
 fn fledge_store_set(key: &str, value: &str) {
-    let req = format!(r#"{{"key":"{}","value":"{}"}}"#, json_escape(key), json_escape(value));
-    unsafe { store_set(req.as_ptr() as *const u8, req.len() as i32) };
+    let req = format!(
+        r#"{{"key":"{}","value":"{}"}}"#,
+        json_escape(key),
+        json_escape(value)
+    );
+    unsafe { store_set(req.as_ptr(), req.len() as i32) };
 }
 
 fn fledge_store_get(key: &str) -> String {
-    let _resp_len = unsafe { store_get(key.as_ptr() as *const u8, key.len() as i32) };
+    let _resp_len = unsafe { store_get(key.as_ptr(), key.len() as i32) };
     let resp = fledge_recv();
     String::from_utf8_lossy(&resp).to_string()
 }
